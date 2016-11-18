@@ -1,0 +1,30 @@
+﻿#pragma kernel CSMain
+ 
+RWTexture2D<float4> tex;
+StructuredBuffer<float> buffer;
+
+float4 colOn;
+float4 colOff;
+
+int texWidth;
+int texHeight;
+ 
+[numthreads(8,8,1)]
+void CSMain (uint2 id : SV_DispatchThreadID)
+{
+	float yNormVal = (id.y / (float)texHeight);
+
+	if( yNormVal < buffer[id.x] )
+		tex[id] = float4( 1, 0, 0, 1 );
+	else
+		tex[id] = float4( 1, 1, 1, 0 );
+
+
+	
+	// if y > buffer[id.x]
+	// colour red
+	// else colour white
+
+
+	
+}

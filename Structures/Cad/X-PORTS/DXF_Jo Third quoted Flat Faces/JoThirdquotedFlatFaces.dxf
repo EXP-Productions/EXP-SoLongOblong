@@ -1,0 +1,178 @@
+999
+FBX AutoCAD (*.DXF) exporter
+  0
+SECTION
+  2
+HEADER
+  9
+$ACADVER
+  1
+AC1008
+  9
+$UCSORG
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+  9
+$UCSXDIR
+ 10
+1.0
+ 20
+0.0
+ 30
+0.0
+  9
+$TILEMODE
+ 70
+   1
+  9
+$UCSYDIR
+ 10
+0.0
+ 20
+1.0
+ 30
+0.0
+  0
+ENDSEC
+  0
+SECTION
+  2
+TABLES
+  0
+TABLE
+  2
+LTYPE
+ 70
+   1
+  0
+LTYPE
+  2
+CONTINUOUS
+ 70
+   64
+  3
+Solid line
+ 72
+   65
+ 73
+   0
+ 40
+0.0
+  0
+ENDTAB
+  0
+TABLE
+  2
+LAYER
+ 70
+   2
+  0
+LAYER
+  2
+Jo_Third_quoted___Flat_face_4
+ 70
+   0
+ 62
+   7
+  6
+CONTINUOUS
+  0
+ENDTAB
+  0
+ENDSEC
+  0
+SECTION
+  2
+BLOCKS
+  0
+ENDSEC
+  0
+SECTION
+  2
+ENTITIES
+  0
+POLYLINE
+  8
+Jo_Third_quoted___Flat_face_4
+ 62
+   7
+ 66
+   1
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+ 70
+   64
+ 71
+   3
+ 72
+   1
+  0
+VERTEX
+  8
+Jo_Third_quoted___Flat_face_4
+ 10
+-495.933600
+ 20
+8.919233
+ 30
+0.000000
+ 70
+   192
+  0
+VERTEX
+  8
+Jo_Third_quoted___Flat_face_4
+ 10
+-426.763500
+ 20
+44.108630
+ 30
+0.000000
+ 70
+   192
+  0
+VERTEX
+  8
+Jo_Third_quoted___Flat_face_4
+ 10
+-487.534500
+ 20
+-53.027890
+ 30
+0.000000
+ 70
+   192
+  0
+VERTEX
+  8
+Jo_Third_quoted___Flat_face_4
+ 62
+   7
+ 10
+0.0
+ 20
+0.0
+ 30
+0.0
+ 70
+   128
+ 71
+   1
+ 72
+   3
+ 73
+   2
+  0
+SEQEND
+  0
+ENDSEC
+  0
+EOF

@@ -1,0 +1,77 @@
+﻿#pragma kernel CSMain
+ 
+RWTexture2D<float4> Result;
+
+RWStructuredBuffer<float>  m_AMatrix; // 2D array stored in sequence
+RWStructuredBuffer<float>  m_BMatrix; // 2D array stored in sequence
+
+StructuredBuffer<float>	m_Kernal;
+
+float4 m_DiffusionRate_A;
+float4 m_DiffusionRate_B;
+
+float m_FeedRate;
+float m_KillRate;
+
+
+float GetConvolution( int x, int y, RWStructuredBuffer<float> matrix )
+{
+    int leftIndex = x - 1;
+    if (leftIndex < 0) leftIndex = m_Resolution - 1;
+
+    int rightIndex = x + 1;
+    if (rightIndex == m_Resolution) rightIndex = 0;
+
+    int topIndex = y + 1;
+    if (topIndex == m_Resolution) topIndex = 0;
+
+    int bottomIndex = y - 1;
+    if (bottomIndex < 0) bottomIndex = m_Resolution - 1;
+
+    float val = 0;
+
+    val += matrix[leftIndex, topIndex] * m_Kernal[0];
+    val += matrix[x, topIndex] * m_Kernal[1];
+    val += matrix[rightIndex, topIndex] * m_Kernal[2];
+
+    val += matrix[leftIndex, y] * m_Kernal[3];
+    val += matrix[x, y] * m_Kernal[4];
+    val += matrix[rightIndex, y] * m_Kernal[5];
+
+    val += matrix[leftIndex, bottomIndex] * m_Kernal[6];
+    val += matrix[x, bottomIndex] * m_Kernal[7];
+    val += matrix[rightIndex, bottomIndex] * m_Kernal[8];
+
+    return val;
+}
+ 
+[numthreads(8,8,1)]
+void CSMain ( uint2 id : SV_DispatchThreadID )
+{
+/*
+	float yNormVal = (id.y / (float)texHeight);
+
+	if( yNormVal < buffer[id.x] )
+		tex[id] = float4( 1, 0, 0, 1 );
+	else
+		tex[id] = float4( 1, 1, 1, 0 );
+		*/
+
+		int index = (id.x * id.y) + id.x;
+		float A = m_AMatrix[ index ];
+        float B = m_BMatrix[ index ];
+
+        float convolutionA = GetConvolution( id.x, id.y, m_AMatrix );
+        float convolutionB = GetConvolution( id.x, id.y, m_BMatrix );
+
+        float newA = A + ( m_DiffusionRate_A * convolutionA - (A * B * B) + m_FeedRate * (1 - A)) * Time.fixedDeltaTime * m_TimeScaler;
+        float newB = B + ( m_DiffusionRate_B * convolutionB + (A * B * B) - (m_KillRate + m_FeedRate) * B) * Time.fixedDeltaTime * m_TimeScaler;
+
+        m_AMatrix[ index] = newA;
+        m_BMatrix[index] = newB;
+
+		Result.r = 1;
+		Result.g = 1;
+		Result.b = 1;
+
+}

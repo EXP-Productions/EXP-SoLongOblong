@@ -1,0 +1,68 @@
+CUT LIST 
+TriPrismSmall.txt
+
+
+Edges:   Round bar: 5mm 	  Total length: 4138.467 
+
+Joint length 30mm
+Length (mm) 		 Edge number
+	690 		 2
+	690 		 5
+	690 		 3
+	690 		 1
+	690 		 4
+	690 		 0
+
+
+
+Edge 0
+	 Length: 0.6897449  		 Vertex 0: (-0.4, 0.0, 0.2)   		 Vertex 1: (0.3, 0.0, 0.3)
+		 Vertex 0 connects too: 
+		  Vertex 1 connects too: 
+
+Edge 1
+	 Length: 0.6897447  		 Vertex 0: (-0.4, 0.0, 0.2)   		 Vertex 1: (0.0, 0.6, 0.1)
+		 Vertex 0 connects too: 
+		  Vertex 1 connects too: 
+
+Edge 2
+	 Length: 0.6897444  		 Vertex 0: (0.0, 0.0, -0.3)   		 Vertex 1: (-0.4, 0.0, 0.2)
+		 Vertex 0 connects too: 
+		  Vertex 1 connects too: 
+
+Edge 3
+	 Length: 0.6897446  		 Vertex 0: (0.0, 0.0, -0.3)   		 Vertex 1: (0.0, 0.6, 0.1)
+		 Vertex 0 connects too: 
+		  Vertex 1 connects too: 
+
+Edge 4
+	 Length: 0.6897448  		 Vertex 0: (0.0, 0.6, 0.1)   		 Vertex 1: (0.3, 0.0, 0.3)
+		 Vertex 0 connects too: 
+		  Vertex 1 connects too: 
+
+Edge 5
+	 Length: 0.6897444  		 Vertex 0: (0.3, 0.0, 0.3)   		 Vertex 1: (0.0, 0.0, -0.3)
+		 Vertex 0 connects too: 
+		  Vertex 1 connects too: 
+
+TRIS
+Edge 0
+	 Length: 0.6897449  		 Vertex 0: (-0.4, 0.0, 0.2)   		 Vertex 1: (0.3, 0.0, 0.3)
+		 Vertex 0 connects too: 
+		  Vertex 1 connects too: 
+
+Edge 1
+	 Length: 0.6897447  		 Vertex 0: (-0.4, 0.0, 0.2)   		 Vertex 1: (0.0, 0.6, 0.1)
+		 Vertex 0 connects too: 
+		  Vertex 1 connects too: 
+
+Edge 2
+	 Length: 0.6897444  		 Vertex 0: (0.0, 0.0, -0.3)   		 Vertex 1: (-0.4, 0.0, 0.2)
+		 Vertex 0 connects too: 
+		  Vertex 1 connects too: 
+
+Edge 3
+	 Length: 0.6897446  		 Vertex 0: (0.0, 0.0, -0.3)   		 Vertex 1: (0.0, 0.6, 0.1)
+		 Vertex 0 connects too: 
+		  Vertex 1 connects too: 
+

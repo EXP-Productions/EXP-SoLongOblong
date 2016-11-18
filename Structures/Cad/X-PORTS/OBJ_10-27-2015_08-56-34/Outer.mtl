@@ -1,0 +1,28 @@
+
+newmtl SphereMat
+Ka 0.6 0.6 0.6
+Kd 0.800 0.800 0.800 1.000
+
+Ks 0.6 0.6 0.6
+d 1
+
+Ns 10.0000
+illum 1
+sharpness 60
+
+
+
+
+newmtl Tube_MeshMat
+Ka 0.6 0.6 0.6
+Kd 0.800 0.800 0.800 1.000
+
+Ks 0.6 0.6 0.6
+d 1
+
+Ns 10.0000
+illum 1
+sharpness 60
+
+
+
