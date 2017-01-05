@@ -20,6 +20,8 @@ public class MeshEdgeSolver : MonoBehaviour
 	static MeshEdgeSolver m_Instance { get; set; }
 	public static MeshEdgeSolver Instance {	get { return m_Instance; 	}	}
 
+
+
 	// The type of joint being used. TODO: Change to edge type instead
 	public SLO_Join.JointType m_JointType = SLO_Join.JointType.Inner; 
 
@@ -107,10 +109,13 @@ public class MeshEdgeSolver : MonoBehaviour
 	public Material m_MatFace;
 	public Material m_FlatFaceMat;
 
+
+    // Moved to SLO object exporter
 	// File output
     public bool m_WriteFile = false;
     public string  fileName = "MyFile.txt";
 
+    // Move to manager - selection and interaction
 	public GameObject m_SelectedObject;
 	ComponentType m_SelectedComponentType = ComponentType.None;
 	enum ComponentType
@@ -121,6 +126,7 @@ public class MeshEdgeSolver : MonoBehaviour
 		Face,
 	}
 
+    // Moved to manager
     SLO_Join m_SelectedJoin;
     public SLO_Join SelectedJoin
     {
@@ -134,12 +140,12 @@ public class MeshEdgeSolver : MonoBehaviour
 
 	Transform SLOMeshParent;
 
-	public SLO_GUI m_GUI;
+    // Moved to manager
+    public SLO_GUI m_GUI;
 
 	void Start () 
     {
 		m_Instance = this;
-
 
 		m_EdgeDiameter = 	PlayerPrefs.GetFloat ("m_EdgeDiameter", 9.5f);
 		m_JoinerLength = 	PlayerPrefs.GetFloat ("m_JoinerLength", 20);
@@ -155,7 +161,7 @@ public class MeshEdgeSolver : MonoBehaviour
         {
 			SLO_Edge e0 = new GameObject( "Edge new" + ((i*3) + 0) ).AddComponent( typeof( SLO_Edge ) ) as SLO_Edge;
 			e0.transform.SetParent( transform );
-			e0.Init( m_Mesh.vertices[ m_Mesh.triangles[(i * 3)] ],      m_Mesh.vertices[  m_Mesh.triangles[(i * 3) + 1]] );
+			e0.Init( m_Mesh.vertices[ m_Mesh.triangles[(i * 3)] ], m_Mesh.vertices[  m_Mesh.triangles[(i * 3) + 1]] );
 
 			SLO_Edge e1 = new GameObject( "Edge new"+ ((i*3) + 1) ).AddComponent( typeof( SLO_Edge ) )as SLO_Edge;
 			e1.transform.SetParent( transform );
@@ -306,7 +312,8 @@ public class MeshEdgeSolver : MonoBehaviour
 
 	}
 
-	public void SetSelectedObject( GameObject go )
+    // Moved to manager
+    public void SetSelectedObject( GameObject go )
 	{
 		m_SelectedObject = go;
 
@@ -336,13 +343,15 @@ public class MeshEdgeSolver : MonoBehaviour
 
 	}
 
-	void OnApplicationQuit()
+    // Moved to manager
+    void OnApplicationQuit()
 	{
 		PlayerPrefs.SetFloat ("m_EdgeDiameter", m_EdgeDiameter);
 		PlayerPrefs.SetFloat ("m_JoinerLength", m_JoinerLength);
 		PlayerPrefs.SetFloat ("WallThickness", WallThickness);
 	}
 
+    // moved to object
 	void CalculateTotalEdgeLength()
 	{
 		// Set total edge length to 0
