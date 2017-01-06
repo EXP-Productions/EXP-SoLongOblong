@@ -326,11 +326,7 @@ public class ProceduralMesh_Tube : MonoBehaviour
 
 		m_Initialized = true;
 	}
-
-	void OnMouseDown()
-	{
-		MeshEdgeSolver.Instance.SetSelectedObject (gameObject);
-	}
+    
 
 	void UpdateMeshVerts()
 	{

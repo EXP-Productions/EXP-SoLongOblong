@@ -6,6 +6,9 @@ namespace SoLongOblong
 {
     public class SLOManager : MonoBehaviour
     {
+        public static SLOManager Instance { get { return m_Instance; } }
+        static SLOManager m_Instance;
+
         public enum ComponentType
         {
             None,
@@ -14,14 +17,15 @@ namespace SoLongOblong
             Face,
         }
 
-        // The object that is currently selected
-        public GameObject m_SelectedObject;
+        #region Selection
+        // Currently selected SLO Objct
+        SLOObject m_SelectedSLOObject;
+
+        // The object that is currently selected component of the object
+        GameObject m_SelectedComponent;
 
         // The component type of the object selected
         ComponentType m_SelectedComponentType = ComponentType.None;
-
-        // GUI
-        public SLO_GUI m_GUI;
 
         // Selected join
         SLO_Join m_SelectedJoin;
@@ -34,34 +38,86 @@ namespace SoLongOblong
                 m_GUI.SetSelectedJoint(m_SelectedJoin);
             }
         }
+        #endregion
+
+
+
+        public Material m_DefaultMat;
+
+        string m_ProjectName = "New SLO Project";
+        public string ProjectName { get { return m_ProjectName; } set { m_ProjectName = value; } }
+
+    
+
+        // GUI
+        public SLO_GUI m_GUI;
+
+      
+        
+        void Awake()
+        {
+            m_Instance = this;
+        }
+
+        void Update()
+        {
+            // Testing
+            if (Input.GetKeyDown(KeyCode.Delete))
+            {
+                if (m_SelectedComponentType == ComponentType.Face)
+                {
+                    SLO_Face face = m_SelectedComponent.GetComponent<SLO_Face>();
+
+                    m_SelectedSLOObject.Faces.Remove(face);
+
+                    // TODO: Remove tabs?
+
+                    Destroy(face.gameObject);
+
+                    m_GUI.m_SelectedElement = null;
+                }
+                else if (m_SelectedComponentType == ComponentType.Edge)
+                {
+                    SLO_Edge edge = m_SelectedComponent.GetComponent<SLO_Edge>();
+
+                    // Remove form list
+                    m_SelectedSLOObject.Edges.Remove(edge);
+
+                    edge.Delete();
+
+                    // set gui back to null
+                    m_GUI.m_SelectedElement = null;
+                }
+            }
+        }
 
         public void SetSelectedObject(GameObject go)
         {
-            m_SelectedObject = go;
+            m_SelectedComponent = go;
 
-            if (m_SelectedObject.GetComponent<ProceduralMesh_Tube>() != null)
+            if (m_SelectedComponent.GetComponent<ProceduralMesh_Tube>() != null)
             {
-                if (m_SelectedObject.transform.parent.GetComponent<SLO_Edge>() != null)
+                if (m_SelectedComponent.transform.parent.GetComponent<SLO_Edge>() != null)
                 {
                     m_SelectedComponentType = ComponentType.Edge;
-                    m_SelectedObject = m_SelectedObject.transform.parent.gameObject;
+                    m_SelectedComponent = m_SelectedComponent.transform.parent.gameObject;
                 }
-                else if (m_SelectedObject.transform.parent.parent.GetComponent<SLO_Join>() != null)
+                else if (m_SelectedComponent.transform.parent.parent.GetComponent<SLO_Join>() != null)
                 {
                     m_SelectedComponentType = ComponentType.Join;
-                    m_SelectedObject = m_SelectedObject.transform.parent.parent.gameObject;
-                    SelectedJoin = m_SelectedObject.transform.parent.parent.GetComponent<SLO_Join>();
+                    m_SelectedComponent = m_SelectedComponent.transform.parent.parent.gameObject;
+                    SelectedJoin = m_SelectedComponent.transform.parent.parent.GetComponent<SLO_Join>();
 
                 }
             }
-            else if (m_SelectedObject.GetComponent<SLO_Face>() != null) m_SelectedComponentType = ComponentType.Face;
-            else if (m_SelectedObject.GetComponent<SLO_Join>() != null) m_SelectedComponentType = ComponentType.Join;
+            else if (m_SelectedComponent.GetComponent<SLO_Face>() != null) m_SelectedComponentType = ComponentType.Face;
+            else if (m_SelectedComponent.GetComponent<SLO_Join>() != null) m_SelectedComponentType = ComponentType.Join;
             else
             {
                 m_SelectedComponentType = ComponentType.None;
             }
 
-            print("Selected: " + m_SelectedObject.name);
+            print("Selected: " + m_SelectedComponent.name);
 
         }
     }
