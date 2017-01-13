@@ -17,6 +17,8 @@ namespace SoLongOblong
             Face,
         }
 
+        public SLOObjectFromMesh m_MeshConvertor;
+
         #region Selection
         // Currently selected SLO Objct
         SLOObject m_SelectedSLOObject;
@@ -35,24 +37,18 @@ namespace SoLongOblong
             set
             {
                 m_SelectedJoin = value;
-                m_GUI.SetSelectedJoint(m_SelectedJoin);
+                //m_GUI.SetSelectedJoint(m_SelectedJoin);
             }
         }
         #endregion
-
-
-
-        public Material m_DefaultMat;
-
+        
         string m_ProjectName = "New SLO Project";
         public string ProjectName { get { return m_ProjectName; } set { m_ProjectName = value; } }
-
-    
-
+        
         // GUI
-        public SLO_GUI m_GUI;
+        public SelectedObjectGUI m_GUI;
 
-      
+        public MeshFilter m_MeshFilterTest;          
         
         void Awake()
         {
@@ -61,6 +57,11 @@ namespace SoLongOblong
 
         void Update()
         {
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                m_MeshConvertor.ConvertMesh(m_MeshFilterTest, true, true);
+            }
+
             // Testing
             if (Input.GetKeyDown(KeyCode.Delete))
             {
@@ -89,6 +90,11 @@ namespace SoLongOblong
                     m_GUI.m_SelectedElement = null;
                 }
             }
+        }
+
+        public void ConvertMesh( MeshFilter filter )
+        {
+
         }
 
         public void SetSelectedObject(GameObject go)

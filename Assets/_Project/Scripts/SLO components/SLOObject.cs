@@ -14,15 +14,13 @@ namespace SoLongOblong
         List<SLO_Face> m_Faces = new List<SLO_Face>();
         public List<SLO_Face> Faces { get { return m_Faces; } }
         List<SLO_Join_Tab> m_Tabs = new List<SLO_Join_Tab>();
-        public List<SLO_Face> Tabs { get { return m_Tabs; } }
+        public List<SLO_Join_Tab> Tabs { get { return m_Tabs; } }
 
+        // Component counts
         public int JointCount { get { return m_Joiners.Count; } }
         public int EdgeCount { get { return m_Joiners.Count; } }
         public int FaceCount { get { return m_Joiners.Count; } }
-
-        // The type of joint being used. TODO: Change to edge type instead
-        public SLO_Join.JointType m_JointType = SLO_Join.JointType.Inner;
-
+        
         #region Face variables
         // The thickness of the face parts TODO: make tab thickness be determined by the material thickness
         float m_FaceThickness = 3;
@@ -58,6 +56,8 @@ namespace SoLongOblong
         #endregion
 
         #region Joint variables
+        // The type of joint being used. TODO: Change to edge type instead
+        public SLO_Join.JointType m_JointType = SLO_Join.JointType.Outer;
         public float m_JoinerLength = 40f;
         public float JoinerLength
         {
@@ -104,12 +104,8 @@ namespace SoLongOblong
         #region Display variables
         // Materials
         bool m_DisplayFaces = true;
-
-        public Material m_MatJoiner;
-        public Material m_MatEdge;
-        public Material m_MatFace;
-        public Material m_FlatFaceMat;
         #endregion
+                
 
         void Update()
         {
@@ -134,7 +130,7 @@ namespace SoLongOblong
         {
             SLO_Join newJoin = new GameObject("Join" + Joiners.Count).AddComponent<SLO_Join>() as SLO_Join;
             newJoin.transform.SetParent(transform);
-            newJoin.Init(m_Joiners.Count, pos, 10, m_MatJoiner);
+            newJoin.Init(this, m_Joiners.Count, pos, 10, SLOResourceManager.Instance.m_MatJoiner);
 
             // Add to list
             m_Joiners.Add(newJoin);
@@ -146,7 +142,7 @@ namespace SoLongOblong
             // Create new edge object
             SLO_Edge edge = new GameObject("Edge new" + (Edges.Count)).AddComponent<SLO_Edge>();
             edge.transform.SetParent(transform);
-            edge.Init(v0, v1);
+            edge.Init(this, v0, v1);
 
             // Add to list
             Edges.Add(edge);
@@ -164,14 +160,14 @@ namespace SoLongOblong
         {
             SLO_Join_Tab newTab = new GameObject().AddComponent<SLO_Join_Tab>() as SLO_Join_Tab;
             newTab.transform.position = j0.transform.position;
-            newTab.Init(j0, j1, j2, m_MatJoiner, m_OuterTabs, m_InnerTabs);
+            newTab.Init(this, j0, j1, j2, SLOResourceManager.Instance.m_MatJoiner, m_OuterTabs, m_InnerTabs);
             m_Tabs.Add(newTab);
         }
 
         public void CreateFace( SLO_Join j0, SLO_Join j1, SLO_Join j2 )
         {
             SLO_Face newFace = new GameObject().AddComponent<SLO_Face>() as SLO_Face;
-            newFace.Init(j0, j1, j2, m_MatFace, m_FaceThickness, m_Faces.Count, m_FaceExtrusionPlacement);
+            newFace.Init(j0, j1, j2, SLOResourceManager.Instance.m_MatFace, m_FaceThickness, m_Faces.Count, m_FaceExtrusionPlacement);
             newFace.transform.SetParent(transform);
 
             // Add to list
