@@ -12,11 +12,24 @@ namespace SoLongOblong
         {
             Inner,
             Outer,
+            TabOnly,
         }
 
         int m_Index;
         public int Index { get { return m_Index; } }
 
+        MeshRenderer m_SphereMesh;
+
+        #region SLO Components
+        // Edges attached to the join
+        List<SLO_Edge> m_ConnectedEdges = new List<SLO_Edge>();
+        public List<SLO_Edge> ConnectedEdges { get { return m_ConnectedEdges; } }
+
+        // Arms attached to the join
+        public List<SLO_Join_Arm> m_Arms = new List<SLO_Join_Arm>();
+        #endregion
+
+        #region Measurements
         float m_Diameter;
         public float Diameter
         {
@@ -38,50 +51,6 @@ namespace SoLongOblong
             get { return m_Arms[0].OutsideDiameter; }
         }
 
-
-
-        float m_Tolerence = 0;
-        public void UpdateJoin(JointType type, float edgeDiameter, float wallthickness, float length)
-        {
-            if (type == JointType.Inner)
-            {
-                Diameter = edgeDiameter;
-
-                for (int i = 0; i < m_Arms.Count; i++)
-                {
-                    m_Arms[i].OutsideDiameter = m_Diameter - m_Tolerence;
-                    m_Arms[i].InsideDiameter = 0;
-                }
-            }
-            else if (type == JointType.Outer)
-            {
-                Diameter = edgeDiameter + (wallthickness * 2);
-
-                for (int i = 0; i < m_Arms.Count; i++)
-                {
-                    m_Arms[i].OutsideDiameter = Diameter;
-                    m_Arms[i].InsideDiameter = edgeDiameter + m_Tolerence;
-                }
-            }
-
-            Length = length;
-
-            for (int i = 0; i < m_Arms.Count; i++)
-            {
-                m_Arms[i].UpdateArm();
-            }
-        }
-
-        // TODO: figure out min shapeways wall thickness
-        public float m_WallThickness = 2;
-
-        GameObject m_SphereMesh;
-
-        List<SLO_Edge> m_ConnectedEdges = new List<SLO_Edge>();
-        public List<SLO_Edge> ConnectedEdges { get { return m_ConnectedEdges; } }
-
-        float m_MaxLengthPercentage = .4f;
-
         float m_Length = .030f;
         public float Length
         {
@@ -99,9 +68,13 @@ namespace SoLongOblong
             }
         }
 
-        // Arms for the joins
-        public List<SLO_Join_Arm> m_Arms = new List<SLO_Join_Arm>();
+        float m_MaxLengthPercentage = .4f;
+        float m_Tolerence = 0;
 
+        // TODO: figure out min shapeways wall thickness
+        public float m_WallThickness = 2;
+        #endregion
+        
         // Stores list of all normals that make up this unique vert
         public List<Vector3> m_Normals;
 
@@ -131,8 +104,8 @@ namespace SoLongOblong
             transform.position = pos;
 
             // TODO: save ref to spheref or scaling
-            m_SphereMesh = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            m_SphereMesh.SetParentAndZero(transform);
+            m_SphereMesh = GameObject.CreatePrimitive(PrimitiveType.Sphere).GetComponent<MeshRenderer>();
+            m_SphereMesh.gameObject.SetParentAndZero(transform);
             m_SphereMesh.transform.localScale = Vector3.one * (m_Diameter / 1000f);
             m_SphereMesh.GetComponent<MeshRenderer>().material = mat;
 
@@ -140,6 +113,52 @@ namespace SoLongOblong
             collider.radius = m_Diameter * .001f;
 
             gameObject.tag = "Selectable";
+        }
+
+        public void UpdateJoin(JointType type, float edgeDiameter, float wallthickness, float length)
+        {
+            if (type == JointType.Inner)
+            {
+                Diameter = edgeDiameter;
+                m_SphereMesh.enabled = true;
+
+                for (int i = 0; i < m_Arms.Count; i++)
+                {
+                    m_Arms[i].Mesh.m_Renderer.enabled = true;
+                    m_Arms[i].OutsideDiameter = m_Diameter - m_Tolerence;
+                    m_Arms[i].InsideDiameter = 0;
+                }
+            }
+            else if (type == JointType.Outer)
+            {
+                Diameter = edgeDiameter + (wallthickness * 2);
+                m_SphereMesh.enabled = true;
+
+                for (int i = 0; i < m_Arms.Count; i++)
+                {
+                    m_Arms[i].Mesh.m_Renderer.enabled = true;
+                    m_Arms[i].OutsideDiameter = Diameter;
+                    m_Arms[i].InsideDiameter = edgeDiameter + m_Tolerence;
+                }
+            }
+            else if (type == JointType.TabOnly)
+            {
+                // turn off sphere mesh
+                m_SphereMesh.enabled = false;
+
+                for (int i = 0; i < m_Arms.Count; i++)
+                {
+                    // Turn arms off
+                    m_Arms[i].Mesh.m_Renderer.enabled = false;                    
+                }
+            }
+
+            Length = length;
+
+            for (int i = 0; i < m_Arms.Count; i++)
+            {
+                m_Arms[i].UpdateArm();
+            }
         }
 
         void OnMouseDown()

@@ -327,7 +327,6 @@ public class ProceduralMesh_Tube : MonoBehaviour
 		m_Initialized = true;
 	}
     
-
 	void UpdateMeshVerts()
 	{
 		mesh.vertices = vertices;		

@@ -38,11 +38,19 @@ namespace SoLongOblong
                 m_Diameter = value;
 
                 if (m_Object.m_JointType == SLO_Join.JointType.Outer)
+                {
+                    m_TubeMesh.m_Renderer.enabled = true;
                     m_TubeMesh.OutsideRadius = (m_Diameter / 2f) * .001f;
+                }
                 else if (m_Object.m_JointType == SLO_Join.JointType.Inner)
                 {
+                    m_TubeMesh.m_Renderer.enabled = true;
                     m_TubeMesh.OutsideRadius = ((m_Diameter / 2f) + (m_Object.WallThickness * 2)) * .001f;
                     m_TubeMesh.InsideRadius = (m_Diameter / 2f) * .001f;
+                }
+                else if (m_Object.m_JointType == SLO_Join.JointType.TabOnly)
+                {
+                    m_TubeMesh.m_Renderer.enabled = false;
                 }
             }
         }

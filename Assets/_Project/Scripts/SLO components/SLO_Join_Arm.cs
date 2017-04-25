@@ -5,8 +5,9 @@ namespace SoLongOblong
 {
     public class SLO_Join_Arm : MonoBehaviour
     {
+        // The join the arm is attached too
         SLO_Join m_AttachedJoin;
-
+        // The join the arm is looking at
         SLO_Join m_LookAtJoin;
         public SLO_Join LookAtJoin
         {
@@ -15,7 +16,7 @@ namespace SoLongOblong
                 return m_LookAtJoin;
             }
         }
-
+        // Look at position property
         Vector3 LookAt
         {
             get
@@ -26,12 +27,17 @@ namespace SoLongOblong
 
         public float m_SleeveLength;
         float m_JoinerMaxPercentageOfEdge;
-
-
-
+        
         // joint radius = edge D + Joint wall thickness 
-
         ProceduralMesh_Tube m_TubeMesh;
+        public ProceduralMesh_Tube Mesh { get { return m_TubeMesh; } }
+
+        // Reference to the edge the arm belongs too
+        SLO_Edge m_Edge;
+
+        #region Measurements and parameters
+        public float m_ClosestEdgeAngle = 180;
+        public float m_IntersectionLength;
 
         public float TotalLength
         {
@@ -67,10 +73,8 @@ namespace SoLongOblong
                 m_TubeMesh.InsideRadius = (m_InsideDiameter / 2f) * .001f;
             }
         }
-
-        SLO_Edge m_Edge;
-        public float m_ClosestEdgeAngle = 180;
-        public float m_IntersectionLength;
+        #endregion
+       
 
         public void Init(SLO_Edge edge, SLO_Join attachedJoin, SLO_Join lookAtJoin, float maxLength, float joinerMaxPercentageOfEdge)
         {
@@ -121,7 +125,7 @@ namespace SoLongOblong
 
             m_IntersectionLength = (90 / m_ClosestEdgeAngle) * ((m_AttachedJoin.Diameter / 2f) * 1.2f);
             //AdjustedLength = Mathf.Clamp (AdjustedLength, m_AttachedJoin.Diameter, 500);
-
+           
             transform.position = m_AttachedJoin.transform.position;
             transform.LookAt(LookAt);
             m_TubeMesh.transform.localScale = new Vector3(1, TotalLength * .001f, 1);

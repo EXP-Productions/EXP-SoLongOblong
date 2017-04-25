@@ -42,17 +42,19 @@ namespace SoLongOblong
         // Use this for initialization
         public void Init( SLOObject sloObj, SLO_Join j0, SLO_Join j1, SLO_Join j2, Material mat, bool makeInner, bool makeOuter)
         {
+            #region Initialization of references
+            // Sets reference to SLO object
             m_Object = sloObj;
 
+            // Set name
             gameObject.name = "Tab";
-
-            //transform.SetParent (j0.transform);
-
+            
+            // Setup the connect joins
             m_BaseJoin = j0;
             m_ConnctedJoin0 = j1;
             m_ConnctedJoin1 = j2;
 
-            // find arms
+            // Find arms
             for (int i = 0; i < m_BaseJoin.m_Arms.Count; i++)
             {
                 if (m_BaseJoin.m_Arms[i].LookAtJoin == m_ConnctedJoin0)
@@ -61,7 +63,9 @@ namespace SoLongOblong
                 if (m_BaseJoin.m_Arms[i].LookAtJoin == m_ConnctedJoin1)
                     m_Arm13 = m_BaseJoin.m_Arms[i];
             }
+            #endregion
 
+            #region Calculations            
             m_InnerVerts = TriMeshTest1.FindInnerVerts(m_BaseJoin.transform.position, m_ConnctedJoin0.transform.position, m_ConnctedJoin1.transform.position, (m_BaseJoin.Diameter / 2f) * .001f, m_BaseJoin.Length * .001f);
             Vector3 v0 = m_InnerVerts[0];
             Vector3 v1 = m_InnerVerts[1];
@@ -71,11 +75,11 @@ namespace SoLongOblong
             m_Normal = Vector3.Cross(v1 - v0, v2 - v0).normalized;
 
             // calculate the offset based on spacing
-            Vector3 offset = m_Normal * ((SpacingRadius / 2f)) * .001f;
+            //Vector3 normalOffset = m_Normal * ((SpacingRadius / 2f)) * .001f;
+            #endregion
 
             if (makeInner)
             {
-
                 // FIND INNER VERTS HERE
                 m_TabInner = new GameObject().AddComponent<TriMesh>() as TriMesh;
                 m_TabInner.name = "Tab Inner";
@@ -111,7 +115,7 @@ namespace SoLongOblong
 
             float desiredRadius = (m_BaseJoin.ArmOuterDiameter / 2f) - (((m_BaseJoin.ArmOuterDiameter / 2f) - (m_BaseJoin.ArmInnerDiameter / 2f)) / 2f);
             float radius = desiredRadius - (SpacingRadius / desiredRadius);
-
+            
             /*
             m_InnerVerts = TriMeshTest1.FindInnerVerts
             (
@@ -128,7 +132,7 @@ namespace SoLongOblong
                 m_BaseJoin.transform.position,          // v1 pos
                 m_ConnctedJoin0.transform.position,     // v2 pos
                 m_ConnctedJoin1.transform.position,     // v3 pos
-                radius * .001f,                     // radius from the join
+                radius * .001f,                         // radius from the join
                 m_Arm12.TotalLength * .001f,            // length of the tab 
                 m_Arm13.TotalLength * .001f             // length of the tab 
             );
@@ -152,6 +156,7 @@ namespace SoLongOblong
                 m_TabOuter.UpdateTri(m_InnerVerts[0] - offset, m_InnerVerts[1] - offset, m_InnerVerts[2] - offset, m_WallThickness * .001f);
         }
 
+        /*
         void OnDrawGizmos()
         {
             Vector3[] verts = new Vector3[5];
@@ -161,5 +166,6 @@ namespace SoLongOblong
             Gizmos.DrawLine(verts[0], verts[2]);
             Gizmos.DrawLine(verts[1], verts[2]);
         }
+        */
     }
 }

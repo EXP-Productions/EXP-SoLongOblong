@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace SoLongOblong
 {
+    /// <summary>
+    /// An SLO object stores all the edges, joiners, faces and tabs for the object
+    /// </summary>
     public class SLOObject : MonoBehaviour
     {
         // object elements. Edges, joiners and faces
@@ -104,8 +107,17 @@ namespace SoLongOblong
         #region Display variables
         // Materials
         bool m_DisplayFaces = true;
+        public bool DisplayFaces
+        {
+            set
+            {
+                m_DisplayFaces = value;
+                for (int i = 0; i < m_Faces.Count; i++)
+                    m_Faces[i].Draw = m_DisplayFaces;
+            }         
+        }
         #endregion
-                
+
 
         void Update()
         {
@@ -156,6 +168,7 @@ namespace SoLongOblong
             */
         }
         
+        // Create a tab by passing in 3 joins
         public void CreateTab(SLO_Join j0, SLO_Join j1, SLO_Join j2)
         {
             SLO_Join_Tab newTab = new GameObject().AddComponent<SLO_Join_Tab>() as SLO_Join_Tab;

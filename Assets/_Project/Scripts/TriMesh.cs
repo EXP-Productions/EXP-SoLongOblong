@@ -145,7 +145,7 @@ public class TriMesh : MonoBehaviour
 		m_MeshFilter.mesh.SetTriangles (m_Tris, 0);
 		m_MeshFilter.mesh.RecalculateBounds ();
 		m_MeshFilter.mesh.RecalculateNormals();
-		;
+		
 	}
 
 	public void UpdateTri( Vector3 vert0, Vector3 vert1, Vector3 vert2, float thickness )

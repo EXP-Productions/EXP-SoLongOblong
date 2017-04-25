@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 /// <summary>
@@ -17,36 +18,40 @@ namespace SoLongOblong
     public class SelectedObjectGUI : MonoBehaviour
     {
         public SLOManager m_Manager;
-        SLOObject m_SelectedObj;
+        SLOObject SelectedObj
+        {
+            get
+            {
+                return m_Manager.SelectedSLOObject;
+            }
+        }
 
         #region Inputfields for component measurements
         // Edge diameter
-        public UnityEngine.UI.InputField m_EdgeDiameterInput;
+        public InputField m_EdgeDiameterInput;
 
         // Joint length
-        public UnityEngine.UI.InputField m_JointLengthInput;
+        public InputField m_JointLengthInput;
 
         // Joint length
-        public UnityEngine.UI.InputField m_FaceThicknessInput;
+        public InputField m_FaceThicknessInput;
 
         // Joint length
-        public UnityEngine.UI.InputField m_WallThicknessInput;
+        public InputField m_WallThicknessInput;
         #endregion
 
         #region Object stats text
-        public UnityEngine.UI.Text m_TextEdgeLength;
-        public UnityEngine.UI.Text m_TextAreaTotal;
-        public UnityEngine.UI.Text m_TextJointCount;
+        public Text m_TextEdgeLength;
+        public Text m_TextAreaTotal;
+        public Text m_TextJointCount;
         #endregion
+
+        public Dropdown m_JointTypeDropDown;
         
-     
-
-
-
-        public UnityEngine.UI.Text m_UITxt_Tri;
+        public Text m_UITxt_Tri;
         public GameObject m_SelectedElement;
 
-        public UnityEngine.UI.Toggle m_ShowFacesToggle;
+        public Toggle m_ShowFacesToggle;
 
         public void SetSelected(GameObject go)
         {
@@ -61,7 +66,8 @@ namespace SoLongOblong
             m_JointLengthInput.onEndEdit.AddListener((value) => SetJoinerLength(value));
             m_FaceThicknessInput.onEndEdit.AddListener((value) => SetFaceThickness(value));
             m_WallThicknessInput.onEndEdit.AddListener((value) => SetWallThickness(value));
-            //m_ShowFacesToggle.onValueChanged.AddListener((value) => m_SelectedObj.m_ShowFaces = value);
+            m_ShowFacesToggle.onValueChanged.AddListener((value) => SelectedObj.DisplayFaces = value);
+            m_JointTypeDropDown.onValueChanged.AddListener((int i) => SetJointType(i));
 
             UpdateText();
         }
@@ -108,56 +114,62 @@ namespace SoLongOblong
 
 
             // Update GUI
-            m_TextEdgeLength.text = "Edge Length: " + (m_SelectedObj.TotalEdgeLength * 1000f).ToString("##");
-            m_TextAreaTotal.text = "Area: " + (m_SelectedObj.TotalArea * 1000f).ToString("##");
+            if (SelectedObj != null)
+            {
+                m_TextEdgeLength.text = "Edge Length: " + (SelectedObj.TotalEdgeLength * 1000f).ToString("##");
+                m_TextAreaTotal.text = "Area: " + (SelectedObj.TotalArea * 1000f).ToString("##");
 
-            m_TextJointCount.text = "Joint count: " + m_SelectedObj.JointCount;
+                m_TextJointCount.text = "Joint count: " + SelectedObj.JointCount;
+            }
         }
 
         public void SetEdgeDiameter(string str)
         {
-            float d = m_SelectedObj.EdgeDiameter;
+            float d = SelectedObj.EdgeDiameter;
             if (float.TryParse(str, out d))
             {
-                m_SelectedObj.EdgeDiameter = d;
+                SelectedObj.EdgeDiameter = d;
             }
 
-            m_EdgeDiameterInput.text = m_SelectedObj.EdgeDiameter.ToString();
+            m_EdgeDiameterInput.text = SelectedObj.EdgeDiameter.ToString();
         }
 
         public void SetJoinerLength(string str)
         {
-            float l = m_SelectedObj.JoinerLength;
+            float l = SelectedObj.JoinerLength;
             if (float.TryParse(str, out l))
             {
-                m_SelectedObj.JoinerLength = l;
+                SelectedObj.JoinerLength = l;
             }
 
-            m_JointLengthInput.text = m_SelectedObj.JoinerLength.ToString();
+            m_JointLengthInput.text = SelectedObj.JoinerLength.ToString();
         }
 
         public void SetFaceThickness(string str)
         {
-            float t = m_SelectedObj.FaceThickness;
+            float t = SelectedObj.FaceThickness;
             if (float.TryParse(str, out t))
             {
-                m_SelectedObj.FaceThickness = t;
+                SelectedObj.FaceThickness = t;
             }
 
-            m_FaceThicknessInput.text = m_SelectedObj.FaceThickness.ToString();
+            m_FaceThicknessInput.text = SelectedObj.FaceThickness.ToString();
         }
 
-       
+        public void SetJointType(int i)
+        {
+            SelectedObj.m_JointType = (SLO_Join.JointType)i;
+        }
 
         public void SetWallThickness(string str)
         {
-            float t = m_SelectedObj.WallThickness;
+            float t = SelectedObj.WallThickness;
             if (float.TryParse(str, out t))
             {
-                m_SelectedObj.WallThickness = t;
+                SelectedObj.WallThickness = t;
             }
 
-            m_WallThicknessInput.text = m_SelectedObj.WallThickness.ToString();
+            m_WallThicknessInput.text = SelectedObj.WallThickness.ToString();
         }
 
        

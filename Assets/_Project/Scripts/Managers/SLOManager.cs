@@ -22,6 +22,8 @@ namespace SoLongOblong
         #region Selection
         // Currently selected SLO Objct
         SLOObject m_SelectedSLOObject;
+        public SLOObject SelectedSLOObject { get { return m_SelectedSLOObject; } }
+
 
         // The object that is currently selected component of the object
         GameObject m_SelectedComponent;
@@ -59,7 +61,7 @@ namespace SoLongOblong
         {
             if (Input.GetKeyDown(KeyCode.C))
             {
-                m_MeshConvertor.ConvertMesh(m_MeshFilterTest, true, true);
+                m_SelectedSLOObject = m_MeshConvertor.ConvertMesh(m_MeshFilterTest, true, true);
             }
 
             // Testing
