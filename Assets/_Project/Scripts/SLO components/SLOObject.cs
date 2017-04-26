@@ -12,12 +12,18 @@ namespace SoLongOblong
         // object elements. Edges, joiners and faces
         List<SLO_Edge> m_Edges = new List<SLO_Edge>();
         public List<SLO_Edge> Edges { get { return m_Edges; } }
+
         List<SLO_Join> m_Joiners = new List<SLO_Join>();
         public List<SLO_Join> Joiners { get { return m_Joiners; } }
+
         List<SLO_Face> m_Faces = new List<SLO_Face>();
         public List<SLO_Face> Faces { get { return m_Faces; } }
+
         List<SLO_Join_Tab> m_Tabs = new List<SLO_Join_Tab>();
         public List<SLO_Join_Tab> Tabs { get { return m_Tabs; } }
+
+        List<SLO_JoinCap> m_Caps = new List<SLO_JoinCap>();
+        public List<SLO_JoinCap> Caps { get { return m_Caps; } }
 
         // Component counts
         public int JointCount { get { return m_Joiners.Count; } }
@@ -117,8 +123,7 @@ namespace SoLongOblong
             }         
         }
         #endregion
-
-
+        
         void Update()
         {
             for (int i = 0; i < m_Edges.Count; i++)
@@ -146,6 +151,29 @@ namespace SoLongOblong
 
             // Add to list
             m_Joiners.Add(newJoin);
+        }
+
+        public void CreateCaps()
+        {
+            CreateCap(m_Joiners[0]);
+            /*
+            for (int i = 0; i < Joiners.Count; i++)
+            {
+                SLO_JoinCap newCap = new GameObject("Cap" + Caps.Count).AddComponent<SLO_JoinCap>();
+                newCap.transform.SetParent(transform);
+                newCap.Init(Joiners[i]);
+                Caps.Add(newCap);
+            }
+            */
+        }
+
+        public void CreateCap(SLO_Join join)
+        {
+            print("Creating cap");
+            SLO_JoinCap newCap = new GameObject("Cap" + Caps.Count).AddComponent<SLO_JoinCap>();
+            newCap.transform.SetParent(transform);
+            newCap.Init(join);
+            Caps.Add(newCap);
         }
 
         // Create a new edge

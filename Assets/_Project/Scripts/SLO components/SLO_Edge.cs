@@ -139,6 +139,22 @@ namespace SoLongOblong
             Destroy(gameObject);
         }
 
+        public Vector3 GetPositionAlongEdge(SLO_Join join,  float distance)
+        {
+            if(join == m_Join0)
+                return (m_Join1.transform.position - m_Join0.transform.position).normalized * distance;
+            else
+                return (m_Join0.transform.position - m_Join1.transform.position).normalized * distance;
+        }
+
+        public Vector3 GetOppositeJoinPos(SLO_Join join)
+        {
+            if (join == m_Join0)
+                return m_Join1.transform.position;
+            else
+                return m_Join0.transform.position;
+        }
+
         void OnDrawGizmos()
         {
             //Vector3 vec01 = ( m_Join0.transform.position - m_Join1.transform.position ).normalized;

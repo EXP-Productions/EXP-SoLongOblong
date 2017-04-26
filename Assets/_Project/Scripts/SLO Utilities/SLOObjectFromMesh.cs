@@ -163,6 +163,8 @@ namespace SoLongOblong
                 sloObj.CreateTab(j2, j0, j1);
             }
 
+            sloObj.CreateCaps();
+
             sloObj.RecalculateAllStats();
 
             // Deactivate original meshfilter
